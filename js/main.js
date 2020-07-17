@@ -3,26 +3,29 @@
   let id = 0;
   const tasks = [];
   let addTasks = () => {
-    tasks.push({});
-    tasks[id]['id'] = id;
-    const task = document.getElementById('text');
-    tasks[id]['coment'] = task.value;
-    task.value = '';
+    const taskTextBox = document.getElementById('text');
+    let task = {
+      'id': id,
+      'comment': taskTextBox.value,
+      'status': '作業中'
+    };
+    tasks.push(task);
+    taskTextBox.value = '';
   }
   let displayTasks = () => {
-    const tr = document.createElement('tr');
+    const tr = document.createElement('tr');  
     // 一列目
     const tdId = document.createElement('td');
     tdId.textContent = tasks[id]['id'];
     tr.appendChild(tdId);
     // 二列目
     const tdTask = document.createElement('td');
-    tdTask.textContent = tasks[id]['coment'];
+    tdTask.textContent = tasks[id]['comment'];
     tr.appendChild(tdTask);
     // 三列目
     const tdStatus = document.createElement('td');
     const button1 = document.createElement('button');
-    tasks[id]['status'] = '作業用';
+    // tasks[id]['status'] = '作業中';
     button1.textContent = tasks[id]['status'];
     tdStatus.appendChild(button1);
     tr.appendChild(tdStatus);
@@ -38,5 +41,6 @@
   document.querySelector('button').addEventListener('click', () => {
     addTasks();
     displayTasks();
+    console.log(tasks);
   });
 }
