@@ -38,6 +38,5 @@
   document.querySelector('button').addEventListener('click', () => {
     addTasks();
     displayTasks();
-    console.log(tasks);
   });
 }
