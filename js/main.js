@@ -46,6 +46,5 @@
     addTasks();
     displayTasks();
     id++;
-    console.log(tasks);
   });
 }
