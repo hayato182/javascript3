@@ -13,7 +13,7 @@
     tasks.push(task);
     for (let i = 0; i < tasks.length; i++) {
       tasks[i].id = i;
-    };
+    }
     taskTextBox.value = '';
   }
   let displayTasks = () => {
@@ -41,22 +41,19 @@
       const button2 = document.createElement('button');
       button2.textContent = tasks[i]['delete'];
       button2.classList.add('delete');
+      button2.addEventListener('click', e =>{
+        const targetTr = e.target.parentNode.parentNode;
+        const targetId = Number(targetTr.firstChild.textContent);
+          tasks.splice(targetId, 1);
+          for (let i = 0; i < tasks.length; i++) {
+            tasks[i].id = i;
+          }
+          displayTasks();
+      });
       tdDelete.appendChild(button2);
       tr.appendChild(tdDelete);
       tbody.appendChild(tr);
     }
-    const deletLists = Array.from(document.querySelectorAll('button.delete'));
-    deletLists.forEach(deletList => {
-      deletList.addEventListener('click', e => {
-        const targetTr = e.target.parentNode.parentNode;
-        const targetId = Number(targetTr.firstChild.textContent);
-          tasks.splice(targetId,1);
-          for (let i = 0; i < tasks.length; i++) {
-            tasks[i].id = i;
-          };
-        displayTasks();
-      });
-    });
   }
   document.querySelector('button').addEventListener('click', () => {
     addTasks();
