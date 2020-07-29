@@ -2,10 +2,10 @@
 {
   const tasks = [];
   const tbody = document.querySelector('tbody')
-  let addTasks = () => {
+  const addTasks = () => {
     const taskTextBox = document.getElementById('text');
-    let task = {
-      'id':'',
+    const task = {
+      'id': '',
       'comment': taskTextBox.value,
       'status': '作業中',
       'delete': '削除',
@@ -16,7 +16,7 @@
     }
     taskTextBox.value = '';
   }
-  let displayTasks = () => {
+  const displayTasks = () => {
     while (tbody.firstChild) {
       tbody.removeChild(tbody.firstChild);
     }
@@ -34,6 +34,14 @@
       const tdStatus = document.createElement('td');
       const button1 = document.createElement('button');
       button1.textContent = tasks[i]['status'];
+      button1.addEventListener('click', () => {
+        if(tasks[i]['status'] === '作業中') {
+          tasks[i]['status'] = '完了';
+        }else {
+          tasks[i]['status'] = '作業中';
+        }
+        button1.textContent = tasks[i]['status'];
+      })
       tdStatus.appendChild(button1);
       tr.appendChild(tdStatus);
       // 四列目
