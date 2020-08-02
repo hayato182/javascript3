@@ -1,7 +1,8 @@
 'use strict';
 {
   const tasks = [];
-  const tbody = document.querySelector('tbody')
+  const tbody = document.querySelector('tbody');
+  let displayKey = 0;
   const addTasks = () => {
     const taskTextBox = document.getElementById('text');
     const task = {
@@ -9,7 +10,13 @@
       'comment': taskTextBox.value,
       'status': '作業中',
       'delete': '削除',
+      'display': undefined
     };
+    if (displayKey === 2) {
+      task.display = false;
+    } else {
+      task.display = true;
+    }
     tasks.push(task);
     for (let i = 0; i < tasks.length; i++) {
       tasks[i].id = i;
@@ -37,11 +44,20 @@
       button1.addEventListener('click', () => {
         if(tasks[i]['status'] === '作業中') {
           tasks[i]['status'] = '完了';
+          tr.classList.remove('workingStatus');
+          tr.classList.add('doneStatus');
         }else {
           tasks[i]['status'] = '作業中';
+          tr.classList.remove('doneStatus');
+          tr.classList.add('workingStatus');
         }
         button1.textContent = tasks[i]['status'];
       })
+      if(tasks[i]['status'] === '作業中') {
+        tr.classList.add('workingStatus');
+      }else {
+        tr.classList.add('doneStatus');
+      }
       tdStatus.appendChild(button1);
       tr.appendChild(tdStatus);
       // 四列目
@@ -59,12 +75,68 @@
           displayTasks();
       });
       tdDelete.appendChild(button2);
+      if (tasks[i]['display']) {
+        tr.style.display = 'table-row';
+      }else {
+        tr.style.display = 'none';
+      }
       tr.appendChild(tdDelete);
       tbody.appendChild(tr);
     }
   }
+  const displayChange = () => {
+    const radios = document.getElementsByName('radio');
+    const doneStatus = document.getElementsByClassName('doneStatus');
+    const workingStatus = document.getElementsByClassName('workingStatus');
+    for (let i = 0; i < 3; i++) {
+      radios[i].addEventListener('click',() => {
+        switch (i) {
+          case 0:
+            for (let i = 0; i < workingStatus.length; i++) {
+              workingStatus[i].style.display = 'table-row';
+              const  workingNumber = Number(workingStatus[i].firstChild.textContent);
+              tasks[workingNumber]['display'] = true;
+            }
+            for (let i = 0; i < doneStatus.length; i++) {
+              doneStatus[i].style.display = 'table-row';
+              const  doneNumber = Number(doneStatus[i].firstChild.textContent);
+              tasks[doneNumber]['display'] = true;
+            }
+            displayKey = 0;
+            break;
+          case 1:
+            for (let i = 0; i < workingStatus.length; i++) {
+              workingStatus[i].style.display = 'table-row';
+              const  workingNumber = Number(workingStatus[i].firstChild.textContent);
+              tasks[workingNumber]['display'] = true;
+            }
+            for (let i = 0; i < doneStatus.length; i++) {
+              doneStatus[i].style.display = 'none';
+              const  doneNumber = Number(doneStatus[i].firstChild.textContent);
+              tasks[doneNumber]['display'] = false;
+            }
+            displayKey = 1;
+            break;
+          case 2:
+            for (let i = 0; i < workingStatus.length; i++) {
+              workingStatus[i].style.display = 'none';
+              const  workingNumber = Number(workingStatus[i].firstChild.textContent);
+              tasks[workingNumber]['display'] = false;
+            }
+            for (let i = 0; i < doneStatus.length; i++) {
+              doneStatus[i].style.display = 'table-row';
+              const  doneNumber = Number(doneStatus[i].firstChild.textContent);
+              tasks[doneNumber]['display'] = true;
+            }
+            displayKey = 2;
+            break;
+        }
+      })
+    }
+  };
   document.querySelector('button').addEventListener('click', () => {
     addTasks();
     displayTasks();
+    displayChange();
   });
 }
